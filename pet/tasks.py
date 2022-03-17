@@ -25,7 +25,9 @@ from typing import List, Dict, Callable
 import log
 from pet import task_helpers
 from pet.utils import InputExample
+from pet.task_helpers import MultiMaskTaskHelper
 
+   
 logger = log.get_logger('root')
 
 
@@ -761,6 +763,124 @@ class RecordProcessor(DataProcessor):
                     f"distribution {list(label_distribution.items())}")
         return examples
 
+from itertools import combinations
+
+def to_verbalizer(labels, n):
+        ret = {}
+        reverse_ret = {}
+        l = []
+        cnt = 1
+        for i in range(1, n + 1):
+            combs = combinations(labels, i)
+            for comb in combs:
+                string = ""
+                for t in comb:
+                  string += t + " "                
+                string = string[:-1]
+                ret[str(cnt)] = string
+                reverse_ret[string] = str(cnt)
+                l.append(str(cnt))
+                cnt += 1
+        return ret, reverse_ret, l
+
+class MFTC_Processor(DataProcessor):
+    """
+    MFTC data processor.
+    """
+
+    # Set this to the name of the task
+    TASK_NAME = "mftc"
+
+    # Set this to the name of the file containing the train examples
+    TRAIN_FILE_NAME = "labeled.csv"
+
+    # Set this to the name of the file containing the dev examples
+    DEV_FILE_NAME = "dev.csv"
+
+    # Set this to the name of the file containing the test examples
+    TEST_FILE_NAME = "test.csv"
+
+    # Set this to the name of the file containing the unlabeled examples
+    UNLABELED_FILE_NAME = "unlabeled_with_label.csv"
+
+    # Set this to a list of all labels in the train + test data
+
+
+    # Set this to the column of the train/test csv files containing the input's text a
+    TEXT_A_COLUMN = "text"
+
+    # Set this to the column of the train/test csv files containing the input's text b or to -1 if there is no text b
+    TEXT_B_COLUMN = -1
+
+    # Set this to the column of the train/test csv files containing the input's gold label
+    LABEL_COLUMN = ["fairness", "non-moral", "purity", "degradation", "loyalty", 
+              "care", "cheating", "betrayal", "subversion", "authority", "harm"]
+    
+    _, REVERSE_MAP, LABELS = to_verbalizer(LABEL_COLUMN, 4)
+
+
+    def get_train_examples(self, data_dir: str) -> List[InputExample]:
+        """
+        This method loads train examples from a file with name `TRAIN_FILE_NAME` in the given directory.
+        :param data_dir: the directory in which the training data can be found
+        :return: a list of train examples
+        """
+        return self._create_examples(os.path.join(data_dir, MFTC_Processor.TRAIN_FILE_NAME), "train")
+
+    def get_dev_examples(self, data_dir: str) -> List[InputExample]:
+        """
+        This method loads dev examples from a file with name `DEV_FILE_NAME` in the given directory.
+        :param data_dir: the directory in which the dev data can be found
+        :return: a list of dev examples
+        """
+        return self._create_examples(os.path.join(data_dir, MFTC_Processor.DEV_FILE_NAME), "dev")
+
+    def get_test_examples(self, data_dir) -> List[InputExample]:
+        """
+        This method loads test examples from a file with name `TEST_FILE_NAME` in the given directory.
+        :param data_dir: the directory in which the test data can be found
+        :return: a list of test examples
+        """
+        return self._create_examples(os.path.join(data_dir, MFTC_Processor.TEST_FILE_NAME), "test")
+
+    def get_unlabeled_examples(self, data_dir) -> List[InputExample]:
+        """
+        This method loads unlabeled examples from a file with name `UNLABELED_FILE_NAME` in the given directory.
+        :param data_dir: the directory in which the unlabeled data can be found
+        :return: a list of unlabeled examples
+        """
+        return self._create_examples(os.path.join(data_dir, MFTC_Processor.UNLABELED_FILE_NAME), "unlabeled")
+
+    def get_labels(self) -> List[str]:
+        """This method returns all possible labels for the task."""
+        # print(MFTC_Processor.LABELS)
+        return MFTC_Processor.LABELS
+
+    def _create_examples(self, path, set_type, max_examples=-1, skip_first=0):
+        """Creates examples for the training and dev sets."""
+        examples = []
+
+        with open(path) as f:
+            reader = csv.DictReader(f, delimiter=',')
+            for idx, row in enumerate(reader):
+                guid = "%s-%s" % (set_type, idx)
+
+                string = ""
+                for l in self.LABEL_COLUMN:
+                    #print(row, l)
+                    if row[l] == "1":
+                        string += l + " "
+                string = string[:-1]
+                
+                text_a = row[MFTC_Processor.TEXT_A_COLUMN]
+                text_b = row[MFTC_Processor.TEXT_B_COLUMN] if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
+
+                example = InputExample(guid=guid, text_a=text_a, text_b=text_b, label=MFTC_Processor.REVERSE_MAP[string])
+                examples.append(example)
+
+        return examples
+
+
 
 PROCESSORS = {
     "mnli": MnliProcessor,
@@ -781,7 +901,7 @@ PROCESSORS = {
     "multirc": MultiRcProcessor,
     "record": RecordProcessor,
     "ax-g": AxGProcessor,
-    "ax-b": AxBProcessor,
+    "ax-b": AxBProcessor
 }  # type: Dict[str,Callable[[],DataProcessor]]
 
 TASK_HELPERS = {
@@ -795,6 +915,12 @@ METRICS = {
     "cb": ["acc", "f1-macro"],
     "multirc": ["acc", "f1", "em"]
 }
+
+# register the processor for this task with its name
+PROCESSORS[MFTC_Processor.TASK_NAME] = MFTC_Processor
+
+# optional: if you have to use verbalizers that correspond to multiple tokens, uncomment the following line
+TASK_HELPERS[MFTC_Processor.TASK_NAME] = MultiMaskTaskHelper
 
 DEFAULT_METRICS = ["acc"]
 
