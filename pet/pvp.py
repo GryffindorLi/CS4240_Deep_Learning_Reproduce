@@ -645,7 +645,7 @@ class MFTC_PVP(PVP):
     # the corresponding DataProcessor's get_labels method) to tokens from the language model's vocabulary
     BASIC_LABEL = ["fairness", "non-moral", "purity", "degradation", "loyalty", "care", "cheating", \
         "betrayal", "subversion", "authority", "harm"]
-    self.no_labels = 2
+    no_labels = 2
     VERBALIZER, _, _ = to_verbalizer(BASIC_LABEL, no_labels)
     
 
@@ -660,19 +660,19 @@ class MFTC_PVP(PVP):
         # our language model's max sequence length.
         text_a = self.shortenable(example.text_a)
         text_b = self.shortenable(example.text_b)
-
+        no_labels = 2
         # For each pattern_id, we define the corresponding pattern and return a pair of text a and text b (where text b
         # can also be empty).
         if self.pattern_id == 0:
             # this corresponds to the pattern [MASK]: a b
-            return [text_a, "This is about", self.mask * self.no_labels], []
+            return [text_a, "This is about", self.mask * no_labels], []
         elif self.pattern_id == 1:
             # this corresponds to the pattern [MASK] News: a || (b)
-            return ["What is the next sentence about", text_a, self.mask * self.no_labels], []
+            return ["What is the next sentence about", text_a, self.mask * no_labels], []
         elif self.pattern_id == 2:
-            return [text_a, "The previous is about", self.mask * self.no_labels], []
+            return [text_a, "The previous is about", self.mask * no_labels], []
         elif self.pattern_id == 3:
-            return ["What is this for", text_a, self.mask * self.no_labels], []
+            return ["What is this for", text_a, self.mask * no_labels], []
         else:
             raise ValueError("No pattern implemented for id {}".format(self.pattern_id))
 
