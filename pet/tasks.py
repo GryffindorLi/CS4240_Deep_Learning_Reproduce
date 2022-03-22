@@ -815,8 +815,8 @@ class MFTC_Processor(DataProcessor):
     # Set this to the column of the train/test csv files containing the input's gold label
     LABEL_COLUMN = ["fairness", "non-moral", "purity", "degradation", "loyalty", 
               "care", "cheating", "betrayal", "subversion", "authority", "harm"]
-    
-    _, REVERSE_MAP, LABELS = to_verbalizer(LABEL_COLUMN, 4)
+    no_labels = 2
+    _, REVERSE_MAP, LABELS = to_verbalizer(LABEL_COLUMN, no_labels)
 
 
     def get_train_examples(self, data_dir: str) -> List[InputExample]:
