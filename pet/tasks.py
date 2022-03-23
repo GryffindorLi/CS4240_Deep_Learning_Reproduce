@@ -859,6 +859,7 @@ class MFTC_Processor(DataProcessor):
     def _create_examples(self, path, set_type, max_examples=-1, skip_first=0):
         """Creates examples for the training and dev sets."""
         examples = []
+        random.seed(42)
 
         with open(path) as f:
             reader = csv.DictReader(f, delimiter=',')
@@ -871,7 +872,7 @@ class MFTC_Processor(DataProcessor):
                     if row[l] == "1":
                         tmp.append(l)
                     if len(tmp) > 1:
-                        tmp = random.Random(42).choice(tmp, no_labels)
+                        tmp = random.choice(tmp, no_labels)
                 string = " ".join(tmp)
                 
                 text_a = row[MFTC_Processor.TEXT_A_COLUMN]
