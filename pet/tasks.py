@@ -872,7 +872,7 @@ class MFTC_Processor(DataProcessor):
                     if row[l] == "1":
                         tmp.append(l)
                 if len(tmp) > 1:
-                    tmp = random.choices(tmp, MFTC_Processor.no_labels)
+                    tmp = random.choices(tmp, k=MFTC_Processor.no_labels)
                     string = " ".join(tmp)[1:]
                 else:
                     string = tmp[0]
