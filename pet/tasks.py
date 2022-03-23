@@ -871,11 +871,11 @@ class MFTC_Processor(DataProcessor):
                 for l in self.LABEL_COLUMN:
                     if row[l] == "1":
                         tmp.append(l)
-                    if len(tmp) > 1:
-                        tmp = random.choices(tmp, no_labels)
-                        string = " ".join(tmp)
-                    else:
-                        string = tmp[0]
+                if len(tmp) > 1:
+                    tmp = random.choices(tmp, no_labels)
+                    string = " ".join(tmp)[1:]
+                else:
+                    string = tmp[0]
                 
                 text_a = row[MFTC_Processor.TEXT_A_COLUMN]
                 text_b = row[MFTC_Processor.TEXT_B_COLUMN] if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
