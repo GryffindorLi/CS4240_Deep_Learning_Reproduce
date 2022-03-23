@@ -868,11 +868,12 @@ class MFTC_Processor(DataProcessor):
 
                 string = ""
                 tmp = []
+                cnt = 0
                 for l in self.LABEL_COLUMN:
-                    if row[l] == "1":
+                    if row[l] == "1" and cnt <= 2:  #! This needs further fixed
                         tmp.append(l)
-                if len(tmp) > 1:
-                    tmp = random.choices(tmp, k=MFTC_Processor.no_labels)
+                        cnt += 1
+                if len(tmp) == 2:
                     string = " ".join(tmp)
                 else:
                     string = tmp[0]
