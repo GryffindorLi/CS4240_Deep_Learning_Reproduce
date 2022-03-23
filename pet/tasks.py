@@ -867,8 +867,8 @@ class MFTC_Processor(DataProcessor):
                 guid = "%s-%s" % (set_type, idx)
 
                 string = ""
+                tmp = []
                 for l in self.LABEL_COLUMN:
-                    tmp = []
                     if row[l] == "1":
                         tmp.append(l)
                     if len(tmp) > 1:
