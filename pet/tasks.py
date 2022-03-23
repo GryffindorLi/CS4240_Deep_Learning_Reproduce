@@ -873,7 +873,7 @@ class MFTC_Processor(DataProcessor):
                         tmp.append(l)
                 if len(tmp) > 1:
                     tmp = random.choices(tmp, k=MFTC_Processor.no_labels)
-                    string = " ".join(tmp)[1:]
+                    string = " ".join(tmp)
                 else:
                     string = tmp[0]
                 
