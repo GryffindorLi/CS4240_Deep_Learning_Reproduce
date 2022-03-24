@@ -919,7 +919,8 @@ TASK_HELPERS = {
 
 METRICS = {
     "cb": ["acc", "f1-macro"],
-    "multirc": ["acc", "f1", "em"]
+    "multirc": ["acc", "f1", "em"],
+    "mftc":["f1","f1-macro"]
 }
 
 # register the processor for this task with its name
