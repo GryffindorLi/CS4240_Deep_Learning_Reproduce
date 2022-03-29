@@ -626,11 +626,10 @@ def _to_verbalizer(labels, n):
             combs = combinations(labels, i)
             for comb in combs:
                 string = ""
-                for t in comb:
-                  string += t + " "                
-                string = string[:-1]
-                ret[str(cnt)] = string
-                cnt += 1
+                if len(comb) > 1:
+                    string = comb[0] + " and " + comb[1]
+                    ret[str(cnt)] = string
+                    cnt += 1
         return ret, cnt
 
 class MFTC_PVP(PVP):
@@ -665,7 +664,7 @@ class MFTC_PVP(PVP):
         # can also be empty).
         if self.pattern_id == 0:
             # this corresponds to the pattern [MASK]: a b
-            return [text_a, "This is about ", self.mask, "and", self.mask], []
+            return [text_a, "This is about ", self.mask], []
         elif self.pattern_id == 1:
             # this corresponds to the pattern [MASK] News: a || (b)
             return ["What is the next sentence about ", text_a, ". It is about ", self.mask, "and", self.mask], []

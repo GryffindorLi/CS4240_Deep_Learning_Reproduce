@@ -774,13 +774,12 @@ def to_verbalizer(labels, n):
             combs = combinations(labels, i)
             for comb in combs:
                 string = ""
-                for t in comb:
-                  string += t + " "                
-                string = string[:-1]
-                ret[str(cnt)] = string
-                reverse_ret[string] = str(cnt)
-                l.append(str(cnt))
-                cnt += 1
+                if len(comb) > 1:
+                    string = comb[0] + " and " + comb[1]
+                    ret[str(cnt)] = string
+                    reverse_ret[string] = str(cnt)
+                    l.append(str(cnt))
+                    cnt += 1
         return ret, reverse_ret, l
 
 class MFTC_Processor(DataProcessor):
@@ -874,15 +873,12 @@ class MFTC_Processor(DataProcessor):
                         tmp.append(l)
                         cnt += 1
                 if len(tmp) == 2:
-                    string = " ".join(tmp)
-                else:
-                    string = tmp[0]
-                
-                text_a = row[MFTC_Processor.TEXT_A_COLUMN]
-                text_b = row[MFTC_Processor.TEXT_B_COLUMN] if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
+                    string = tmp[0] + " and " + tmp[1]
+                    text_a = row[MFTC_Processor.TEXT_A_COLUMN]
+                    text_b = row[MFTC_Processor.TEXT_B_COLUMN] if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
 
-                example = InputExample(guid=guid, text_a=text_a, text_b=text_b, label=MFTC_Processor.REVERSE_MAP[string])
-                examples.append(example)
+                    example = InputExample(guid=guid, text_a=text_a, text_b=text_b, label=MFTC_Processor.REVERSE_MAP[string])
+                    examples.append(example)
 
         return examples
 
