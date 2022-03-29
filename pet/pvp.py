@@ -627,7 +627,7 @@ def _to_verbalizer(labels, n):
             for comb in combs:
                 string = ""
                 if len(comb) > 1:
-                    string = comb[0] + " and " + comb[1]
+                    string = comb[0] + " " + comb[1]
                     ret[str(cnt)] = string
                     cnt += 1
         return ret, cnt

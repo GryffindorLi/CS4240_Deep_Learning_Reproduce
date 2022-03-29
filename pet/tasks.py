@@ -775,7 +775,7 @@ def to_verbalizer(labels, n):
             for comb in combs:
                 string = ""
                 if len(comb) > 1:
-                    string = comb[0] + " and " + comb[1]
+                    string = comb[0] + " " + comb[1]
                     ret[str(cnt)] = string
                     reverse_ret[string] = str(cnt)
                     l.append(str(cnt))
@@ -873,7 +873,7 @@ class MFTC_Processor(DataProcessor):
                         tmp.append(l)
                         cnt += 1
                 if len(tmp) == 2:
-                    string = tmp[0] + " and " + tmp[1]
+                    string = tmp[0] + " " + tmp[1]
                     text_a = row[MFTC_Processor.TEXT_A_COLUMN]
                     text_b = row[MFTC_Processor.TEXT_B_COLUMN] if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
 
