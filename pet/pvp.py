@@ -626,10 +626,11 @@ def _to_verbalizer(labels, n):
             combs = combinations(labels, i)
             for comb in combs:
                 string = ""
-                if len(comb) > 1:
-                    string = comb[0] + " and " + comb[1]
-                    ret[str(cnt)] = string
-                    cnt += 1
+                for t in comb:
+                    string += t + " "
+                string = string[:-1]
+                ret[str(cnt)] = string
+                cnt += 1
         return ret, cnt
 
 class MFTC_PVP(PVP):
@@ -644,7 +645,7 @@ class MFTC_PVP(PVP):
     # the corresponding DataProcessor's get_labels method) to tokens from the language model's vocabulary
     BASIC_LABEL = ["fairness", "non-moral", "purity", "degradation", "loyalty", "care", "cheating", \
         "betrayal", "subversion", "authority", "harm"]
-    no_labels = 2
+    no_labels = 1
     VERBALIZER, _, _ = to_verbalizer(BASIC_LABEL, no_labels)
     
 
@@ -659,7 +660,7 @@ class MFTC_PVP(PVP):
         # our language model's max sequence length.
         text_a = self.shortenable(example.text_a)
         text_b = self.shortenable(example.text_b)
-        no_labels = 2
+        no_labels = 1
         # For each pattern_id, we define the corresponding pattern and return a pair of text a and text b (where text b
         # can also be empty).
         if self.pattern_id == 0:
@@ -669,7 +670,7 @@ class MFTC_PVP(PVP):
             # this corresponds to the pattern [MASK] News: a || (b)
             return ["What is the next sentence about ", text_a, ". It is about ", self.mask, "and", self.mask], []
         elif self.pattern_id == 2:
-            return [text_a, "The previous is about ", self.mask, "and", self.mask], []
+            return [text_a, "The previous is about ", self.mask, self.mask], []
         elif self.pattern_id == 3:
             return ["What is this for ", text_a, ". It is for ", self.mask, "and", self.mask], []
         else:
