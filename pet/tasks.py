@@ -774,10 +774,10 @@ def to_verbalizer(labels, n):
             combs = combinations(labels, i)
             for comb in combs:
                 string = ""
-                if len(comb) > 1:
-                    string = comb[0] + " and " + comb[1]
-                    ret[str(cnt)] = string
-                    reverse_ret[string] = str(cnt)
+                if len(comb) == 1:
+                    string = comb[0] 
+                    ret[string] = string
+                    reverse_ret[string] = string
                     l.append(str(cnt))
                     cnt += 1
         return ret, reverse_ret, l
