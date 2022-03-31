@@ -814,7 +814,7 @@ class MFTC_Processor(DataProcessor):
     # Set this to the column of the train/test csv files containing the input's gold label
     LABEL_COLUMN = ["fairness", "non-moral", "purity", "degradation", "loyalty", 
               "care", "cheating", "betrayal", "subversion", "authority", "harm"]
-    no_labels = 2
+    no_labels = 1
     _, REVERSE_MAP, LABELS = to_verbalizer(LABEL_COLUMN, no_labels)
 
 
@@ -866,19 +866,20 @@ class MFTC_Processor(DataProcessor):
                 guid = "%s-%s" % (set_type, idx)
 
                 string = ""
-                tmp = []
-                cnt = 0
                 for l in self.LABEL_COLUMN:
-                    if row[l] == "1" and cnt < 2:  #! This needs further fixed
-                        tmp.append(l)
-                        cnt += 1
-                if len(tmp) == 2:
-                    string = tmp[0] + " and " + tmp[1]
-                    text_a = row[MFTC_Processor.TEXT_A_COLUMN]
-                    text_b = row[MFTC_Processor.TEXT_B_COLUMN] if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
+                    if row[l] == "1":
+                        string = l
+                
+                text_a = row[MFTC_Processor.TEXT_A_COLUMN]
+                text_b = row[MFTC_Processor.TEXT_B_COLUMN] \
+                    if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
+                meta = {
+                        'label': string,
+                        }
 
-                    example = InputExample(guid=guid, text_a=text_a, text_b=text_b, label=MFTC_Processor.REVERSE_MAP[string])
-                    examples.append(example)
+                example = InputExample(guid=guid, text_a=text_a, text_b=text_b, 
+                    label=MFTC_Processor.REVERSE_MAP[string], meta=meta)
+                examples.append(example)
 
         return examples
 

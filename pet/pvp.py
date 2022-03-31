@@ -644,7 +644,7 @@ class MFTC_PVP(PVP):
     # the corresponding DataProcessor's get_labels method) to tokens from the language model's vocabulary
     BASIC_LABEL = ["fairness", "non-moral", "purity", "degradation", "loyalty", "care", "cheating", \
         "betrayal", "subversion", "authority", "harm"]
-    no_labels = 2
+    no_labels = 1
     VERBALIZER, _, _ = to_verbalizer(BASIC_LABEL, no_labels)
     
 
@@ -659,7 +659,9 @@ class MFTC_PVP(PVP):
         # our language model's max sequence length.
         text_a = self.shortenable(example.text_a)
         text_b = self.shortenable(example.text_b)
-        no_labels = 2
+        lab = example.meta['label']
+        num_masks = max(len(get_verbalization_ids(label, self.wrapper.tokenizer, False)))
+        no_labels = 1
         # For each pattern_id, we define the corresponding pattern and return a pair of text a and text b (where text b
         # can also be empty).
         if self.pattern_id == 0:
