@@ -660,7 +660,8 @@ class MFTC_PVP(PVP):
         text_a = self.shortenable(example.text_a)
         text_b = self.shortenable(example.text_b)
         lab = example.meta['label']
-        num_masks = max(len(get_verbalization_ids(lab, self.wrapper.tokenizer, False)))
+        #! num_masks = max(len(get_verbalization_ids(c, self.wrapper.tokenizer, False)) for c in lab)
+        num_masks = 3
         no_labels = 1
         # For each pattern_id, we define the corresponding pattern and return a pair of text a and text b (where text b
         # can also be empty).
