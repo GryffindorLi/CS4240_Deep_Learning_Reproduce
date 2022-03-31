@@ -644,7 +644,7 @@ class MFTC_PVP(PVP):
     # the corresponding DataProcessor's get_labels method) to tokens from the language model's vocabulary
     BASIC_LABEL = ["equity", "corrupt", "purity", "degradation", "loyalty", "care", "cheating", \
         "betrayal", "sabotage", "authority", "harm"]
-    no_labels = 2
+    no_labels = 1
     VERBALIZER, _, _ = to_verbalizer(BASIC_LABEL, no_labels)
     
 
@@ -667,11 +667,11 @@ class MFTC_PVP(PVP):
             return [text_a, "This is about ", self.mask], []
         elif self.pattern_id == 1:
             # this corresponds to the pattern [MASK] News: a || (b)
-            return ["What is the next sentence about ", text_a, ". It is about ", self.mask, "and", self.mask], []
+            return ["What is the next sentence about ", text_a, ". It is about ", self.mask], []
         elif self.pattern_id == 2:
-            return [text_a, "The previous is about ", self.mask, "and", self.mask], []
+            return [text_a, "The previous is about ", self.mask], []
         elif self.pattern_id == 3:
-            return ["What is this for ", text_a, ". It is for ", self.mask, "and", self.mask], []
+            return ["What is this for ", text_a, ". It is for ", self.mask], []
         else:
             raise ValueError("No pattern implemented for id {}".format(self.pattern_id))
 

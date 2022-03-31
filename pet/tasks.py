@@ -812,9 +812,9 @@ class MFTC_Processor(DataProcessor):
     TEXT_B_COLUMN = -1
 
     # Set this to the column of the train/test csv files containing the input's gold label
-    LABEL_COLUMN = ["fairness", "non-moral", "purity", "degradation", "loyalty", 
-              "care", "cheating", "betrayal", "subversion", "authority", "harm"]
-    no_labels = 2
+    LABEL_COLUMN = ["equity", "corrupt", "purity", "degradation", "loyalty",
+              "care", "cheating", "betrayal", "sabotage", "authority", "harm"]
+    no_labels = 1
     _, REVERSE_MAP, LABELS = to_verbalizer(LABEL_COLUMN, no_labels)
 
 
@@ -872,8 +872,8 @@ class MFTC_Processor(DataProcessor):
                     if row[l] == "1" and cnt < 2:  #! This needs further fixed
                         tmp.append(l)
                         cnt += 1
-                if len(tmp) == 2:
-                    string = tmp[0] + " and " + tmp[1]
+                if len(tmp) == 1:
+                    string = tmp[0]
                     text_a = row[MFTC_Processor.TEXT_A_COLUMN]
                     text_b = row[MFTC_Processor.TEXT_B_COLUMN] if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
 
