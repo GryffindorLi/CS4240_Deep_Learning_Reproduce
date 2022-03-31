@@ -774,11 +774,11 @@ def to_verbalizer(labels, n):
             combs = combinations(labels, i)
             for comb in combs:
                 string = ""
-                if len(comb) > 1:
-                    string = comb[0] + " and " + comb[1]
-                    ret[str(cnt)] = string
-                    reverse_ret[string] = str(cnt)
-                    l.append(str(cnt))
+                if len(comb) == 1:
+                    string = comb[0] 
+                    ret[string] = string
+                    reverse_ret[string] = string
+                    l.append(string)
                     cnt += 1
         return ret, reverse_ret, l
 
@@ -869,7 +869,7 @@ class MFTC_Processor(DataProcessor):
                 tmp = []
                 cnt = 0
                 for l in self.LABEL_COLUMN:
-                    if row[l] == "1" and cnt < 2:  #! This needs further fixed
+                    if row[l] == "1" and cnt < 1:  #! This needs further fixed
                         tmp.append(l)
                         cnt += 1
                 if len(tmp) == 1:
