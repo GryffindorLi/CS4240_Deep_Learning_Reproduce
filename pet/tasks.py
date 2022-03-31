@@ -769,7 +769,7 @@ def to_verbalizer(labels, n):
         ret = {}
         reverse_ret = {}
         l = []
-        cnt = 1
+        #! cnt = 1
         for i in range(1, n + 1):
             combs = combinations(labels, i)
             for comb in combs:
@@ -777,9 +777,9 @@ def to_verbalizer(labels, n):
                 if len(comb) == 1:
                     string = comb[0]
                     ret[string] = string
-                    reverse_ret[string] = str(cnt)
-                    l.append(str(cnt))
-                    cnt += 1
+                    reverse_ret[string] = string
+                    l.append(string)
+                    #! cnt += 1
         return ret, reverse_ret, l
 
 class MFTC_Processor(DataProcessor):
