@@ -866,21 +866,23 @@ class MFTC_Processor(DataProcessor):
                 guid = "%s-%s" % (set_type, idx)
 
                 string = ""
+                tmp = []
                 for l in self.LABEL_COLUMN:
                     if row[l] == "1":
-                        string = l
-                
-                text_a = row[MFTC_Processor.TEXT_A_COLUMN]
-                text_b = row[MFTC_Processor.TEXT_B_COLUMN] \
-                    if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
-                meta = {
-                        'label': string,
-                        }
+                        tmp.append(l)
+                        #string = l
+                if len(tmp) == 1:
+                    string = tmp[0]
+                    text_a = row[MFTC_Processor.TEXT_A_COLUMN]
+                    text_b = row[MFTC_Processor.TEXT_B_COLUMN] \
+                        if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
+                    meta = {
+                            'label': string,
+                            }
 
-                example = InputExample(guid=guid, text_a=text_a, text_b=text_b, 
-                    label=MFTC_Processor.REVERSE_MAP[string], meta=meta)
-                examples.append(example)
-
+                    example = InputExample(guid=guid, text_a=text_a, text_b=text_b, 
+                        label=MFTC_Processor.REVERSE_MAP[string], meta=meta)
+                    examples.append(example)
         return examples
 
 
