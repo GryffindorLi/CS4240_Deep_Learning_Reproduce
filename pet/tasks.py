@@ -777,6 +777,7 @@ def to_verbalizer(labels, n):
                 if len(comb) == 1:
                     string = comb[0]
                     ret[string] = string
+                    reverse_ret[string] = string
                     l.append(str(cnt))
                     cnt += 1
         return ret, reverse_ret, l
