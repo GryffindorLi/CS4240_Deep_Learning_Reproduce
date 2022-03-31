@@ -869,7 +869,7 @@ class MFTC_Processor(DataProcessor):
                 tmp = []
                 cnt = 0
                 for l in self.LABEL_COLUMN:
-                    if row[l] == "1" and cnt < 2:  #! This needs further fixed
+                    if row[l] == "1" and cnt < 1:  #! This needs further fixed
                         tmp.append(l)
                         cnt += 1
                 if len(tmp) == 1:
