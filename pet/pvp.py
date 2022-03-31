@@ -658,7 +658,7 @@ class MFTC_PVP(PVP):
             return [text_a, "This is about ", self.mask * num_masks], []
         elif self.pattern_id == 1:
             # this corresponds to the pattern [MASK] News: a || (b)
-            return ["What is the next sentence about ", text_a, ". It is about ", self.mask * num_masks], []
+            return ["The tweet ", text_a, " is about ", self.mask * num_masks], []
         elif self.pattern_id == 2:
             return [text_a, "This text can be classified as ", self.mask * num_masks], []
         elif self.pattern_id == 3:
