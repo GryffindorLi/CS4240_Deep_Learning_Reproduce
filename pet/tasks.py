@@ -873,7 +873,7 @@ class MFTC_Processor(DataProcessor):
                         tmp.append(l)
                         cnt += 1
                 if len(tmp) == 2:
-                    string = tmp[0] + " and " + tmp[1]
+                    string = tmp[0] + "," + tmp[1]
                     text_a = row[MFTC_Processor.TEXT_A_COLUMN]
                     text_b = row[MFTC_Processor.TEXT_B_COLUMN] if MFTC_Processor.TEXT_B_COLUMN >= 0 else None
 
