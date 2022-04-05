@@ -812,8 +812,8 @@ class MFTC_Processor(DataProcessor):
     TEXT_B_COLUMN = -1
 
     # Set this to the column of the train/test csv files containing the input's gold label
-    LABEL_COLUMN = ["fair", "amoral", "pure", "degradation", "allegiance", 
-              "care", "cheating", "betrayal", "collapse", "leadership", "harm"]
+    LABEL_COLUMN = ["equity", "corrupt", "purity", "degradation", "loyalty", "care", "cheating", \
+        "betrayal", "sabotage", "authority", "harm"]
     no_labels = 2
     _, REVERSE_MAP, LABELS = to_verbalizer(LABEL_COLUMN, no_labels)
 
