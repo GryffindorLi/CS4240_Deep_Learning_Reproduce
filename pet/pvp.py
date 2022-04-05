@@ -642,8 +642,8 @@ class MFTC_PVP(PVP):
 
     # Set this to the verbalizer for the given task: a mapping from the task's labels (which can be obtained using
     # the corresponding DataProcessor's get_labels method) to tokens from the language model's vocabulary
-    BASIC_LABEL = ["fair", "amoral", "pure", "degradation", "allegiance", "care", "cheating", \
-        "betrayal", "collapse", "leadership", "harm"]
+    BASIC_LABEL = ["equity", "corrupt", "purity", "degradation", "loyalty", "care", "cheating", \
+        "betrayal", "sabotage", "authority", "harm"]
     no_labels = 2
     VERBALIZER, _, _ = to_verbalizer(BASIC_LABEL, no_labels)
     
