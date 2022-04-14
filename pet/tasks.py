@@ -774,12 +774,14 @@ def to_verbalizer(labels, n):
             combs = combinations(labels, i)
             for comb in combs:
                 string = ""
-                if len(comb) > 1:
+                if len(comb) == 2:
                     string = comb[0] + " and " + comb[1]
-                    ret[str(cnt)] = string
-                    reverse_ret[string] = str(cnt)
-                    l.append(str(cnt))
-                    cnt += 1
+                elif len(comb) == 1 : 
+                    string = comb[0]
+                ret[str(cnt)] = string
+                reverse_ret[string] = str(cnt)
+                l.append(str(cnt))
+                cnt += 1
         return ret, reverse_ret, l
 
 class MFTC_Processor(DataProcessor):
