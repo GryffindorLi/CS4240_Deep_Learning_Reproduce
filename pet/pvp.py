@@ -660,6 +660,7 @@ class MFTC_PVP(PVP):
         text_a = self.shortenable(example.text_a)
         text_b = self.shortenable(example.text_b)
         no_labels = 2
+        num_masks = 2
         # For each pattern_id, we define the corresponding pattern and return a pair of text a and text b (where text b
         # can also be empty).
         if self.pattern_id == 0:
