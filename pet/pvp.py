@@ -619,19 +619,6 @@ class RecordPVP(PVP):
     def verbalize(self, label) -> List[str]:
         return []
 
-def _to_verbalizer(labels, n):
-        ret = {}
-        cnt = 1
-        for i in range(1, n + 1):
-            combs = combinations(labels, i)
-            for comb in combs:
-                string = ""
-                if len(comb) > 1:
-                    string = comb[0] + " and " + comb[1]
-                    ret[str(cnt)] = string
-                    cnt += 1
-        return ret, cnt
-
 class MFTC_PVP(PVP):
     """
     MFTC pattern-verbalizer pair (PVP).
@@ -642,7 +629,7 @@ class MFTC_PVP(PVP):
 
     # Set this to the verbalizer for the given task: a mapping from the task's labels (which can be obtained using
     # the corresponding DataProcessor's get_labels method) to tokens from the language model's vocabulary
-    BASIC_LABEL = ["equity", "corrupt", "purity", "degradation", "loyalty", "care", "cheating", \
+    BASIC_LABEL = ["equity", "corrupt", "purity", "degradation", "loyalty", "care", "cheating",
         "betrayal", "sabotage", "authority", "harm"]
     no_labels = 1
     VERBALIZER, _, _ = to_verbalizer(BASIC_LABEL, no_labels)
@@ -659,19 +646,19 @@ class MFTC_PVP(PVP):
         # our language model's max sequence length.
         text_a = self.shortenable(example.text_a)
         text_b = self.shortenable(example.text_b)
-        no_labels = 2
+        num_masks = 1
         # For each pattern_id, we define the corresponding pattern and return a pair of text a and text b (where text b
         # can also be empty).
         if self.pattern_id == 0:
             # this corresponds to the pattern [MASK]: a b
-            return [text_a, "This is about ", self.mask], []
+            return [text_a, "This is about ", self.mask * num_masks], []
         elif self.pattern_id == 1:
             # this corresponds to the pattern [MASK] News: a || (b)
-            return ["What is the next sentence about ", text_a, ". It is about ", self.mask], []
+            return ["The tweet ", text_a, " is about ", self.mask * num_masks], []
         elif self.pattern_id == 2:
-            return [text_a, "The previous is about ", self.mask], []
+            return [text_a, "This text can be classified as ", self.mask * num_masks], []
         elif self.pattern_id == 3:
-            return ["What is this for ", text_a, ". It is for ", self.mask], []
+            return [text_a, "This belongs to the categories of ", self.mask * num_masks], []
         else:
             raise ValueError("No pattern implemented for id {}".format(self.pattern_id))
 
