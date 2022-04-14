@@ -619,18 +619,24 @@ class RecordPVP(PVP):
     def verbalize(self, label) -> List[str]:
         return []
 
-def _to_verbalizer(labels, n):
+def to_verbalizer(labels, n):
         ret = {}
+        reverse_ret = {}
+        l = []
         cnt = 1
         for i in range(1, n + 1):
             combs = combinations(labels, i)
             for comb in combs:
                 string = ""
-                if len(comb) > 1:
+                if len(comb) == 2:
                     string = comb[0] + " and " + comb[1]
-                    ret[str(cnt)] = string
-                    cnt += 1
-        return ret, cnt
+                elif len(comb) == 1 : 
+                    string = comb[0]
+                ret[str(cnt)] = string
+                reverse_ret[string] = str(cnt)
+                l.append(str(cnt))
+                cnt += 1
+        return ret, reverse_ret, l
 
 class MFTC_PVP(PVP):
     """
